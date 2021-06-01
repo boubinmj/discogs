@@ -85,26 +85,35 @@ with open('discogs.csv') as csv_file:
 
 print(artists)
 
-search_results = discogsclient.search(type='release', artist=artists[2])
+search_results = discogsclient.search(type='release', artist=artists[183])
 
-listing = {
-    'id': [],
-    'artist': [],
-    'title': [],
-    'year': [],
-    'labels': []
-}
+listings = []
 
 print('\n== Search results for release_title=House For All ==')
 for release in search_results:
     print(f'\n\t== discogs-id {release.id} ==')
     print(f'\tArtist\t: {", ".join(artist.name for artist in release.artists)}')
-    print(f'\tTitle\t: {release.title}')
+    #print(f'\tTitle\t: {release.title}')
     print(f'\tYear\t: {release.year}')
     print(f'\tLabels\t: {", ".join(label.name for label in release.labels)}')
 
-    listing['id'].append(release.id)
-    listing['artist'].append(join(artist.name for artist in release.artists))
+    print(release)
+
+    listing = {
+    'id': release.id,
+    'artist': release.artists[0].name,
+    'title': release.title,
+    'year': release.year
+    }
+
+    # listing['id'].append(release.id)
+    # listing['artist'].append(release.artists[0].name)
+    # listing['title'].append(release.title)
+    # listing['year'].append(release.year)
+    # print(release.title)
+    # print(release.artists[0].name)
+    # print(release.labels)
+    listings.append(listing)
 
 
 # You can reach into the Fetcher lib if you wish to used the wrapped requests
@@ -120,4 +129,16 @@ print(f'    * saving image to disk = {image.split("/")[-1]}')
 with open(image.split('/')[-1], 'wb') as fh:
     fh.write(content)
 
-print(listing)
+print(listings)
+
+csv_file = "dababy.csv"
+csv_columns = ['id', 'artist', 'title', 'year']
+
+try:
+    with open(csv_file, 'w') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
+        writer.writeheader()
+        for data in listings:
+            writer.writerow(data)
+except IOError:
+    print("I/O error")
