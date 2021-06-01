@@ -77,7 +77,7 @@ print(' Authentication complete. Future requests will be signed with the above t
 
 artists = []
 
-with open('disc-2014.csv') as csv_file:
+with open('discogs.csv') as csv_file:
     csv_reader = csv.reader(csv_file,delimiter=',')
     line_count = 0
     for row in csv_reader:
@@ -104,6 +104,7 @@ for release in search_results:
     print(f'\tLabels\t: {", ".join(label.name for label in release.labels)}')
 
     listing['id'].append(release.id)
+    listing['artist'].append(join(artist.name for artist in release.artists))
 
 
 # You can reach into the Fetcher lib if you wish to used the wrapped requests
