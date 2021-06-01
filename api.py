@@ -10,6 +10,7 @@ import sys
 import discogs_client
 from discogs_client.exceptions import HTTPError
 import csv
+import pandas as pd
 
 # Your consumer key and consumer secret generated and provided by Discogs.
 # See http://www.discogs.com/settings/developers . These credentials
@@ -76,62 +77,72 @@ print(' Authentication complete. Future requests will be signed with the above t
 # additional discogs authenticated endpoints, such as database search.
 
 artists = []
+albums = []
 
 with open('discogs.csv') as csv_file:
     csv_reader = csv.reader(csv_file,delimiter=',')
     line_count = 0
     for row in csv_reader:
         artists.append(row[1])
+        albums.append(row[0])
 
 print(artists)
-
-search_results = discogsclient.search(type='release', artist=artists[183])
-
 listings = []
 
-print('\n== Search results for release_title=House For All ==')
-for release in search_results:
-    print(f'\n\t== discogs-id {release.id} ==')
-    print(f'\tArtist\t: {", ".join(artist.name for artist in release.artists)}')
-    #print(f'\tTitle\t: {release.title}')
-    print(f'\tYear\t: {release.year}')
-    print(f'\tLabels\t: {", ".join(label.name for label in release.labels)}')
+for artist in artists[114:115]:
+    search_results = discogsclient.search(type='release', artist=artist)
 
-    print(release)
+    album_results = discogsclient.search(type='listing', artist=artist)
 
-    listing = {
-    'id': release.id,
-    'artist': release.artists[0].name,
-    'title': release.title,
-    'year': release.year
-    }
+    print(type(search_results))
+    print(type(album_results))
+    print('\n== Search results for release_title=House For All ==')
+    count = 20
+    # for release in search_results:
+    #     if(count < 1):
+    #         break
+    #     print(f'\n\t== discogs-id {release.id} ==')
+    #     # print(f'\tArtist\t: {", ".join(artist.name for artist in release.artists)}')
+    #     # #print(f'\tTitle\t: {release.title}')
+    #     # print(f'\tYear\t: {release.year}')
+    #     # print(f'\tLabels\t: {", ".join(label.name for label in release.labels)}')
 
-    # listing['id'].append(release.id)
-    # listing['artist'].append(release.artists[0].name)
-    # listing['title'].append(release.title)
-    # listing['year'].append(release.year)
-    # print(release.title)
-    # print(release.artists[0].name)
-    # print(release.labels)
-    listings.append(listing)
+    #     print(release)
+
+    #     listing = {
+    #     'id': release.id,
+    #     'artist': release.artists[0].name,
+    #     'title': release.title,
+    #     'year': release.year
+    #     }
+
+    #     listings.append(listing)
+
+    #     count = count - 1
+
+    print(album_results)
+    for lis in album_results:
+        print(lis.artist)
+    # for listing in album_results:
+    #     print(listing.price)
 
 
 # You can reach into the Fetcher lib if you wish to used the wrapped requests
 # library to download an image. The following example demonstrates this.
-image = search_results[0].images[0]['uri']
-content, resp = discogsclient._fetcher.fetch(None, 'GET', image,
-                headers={'User-agent': discogsclient.user_agent})
+# image = search_results[0].images[0]['uri']
+# content, resp = discogsclient._fetcher.fetch(None, 'GET', image,
+#                 headers={'User-agent': discogsclient.user_agent})
 
-print(' == API image request ==')
-print(f'    * response status      = {resp}')
-print(f'    * saving image to disk = {image.split("/")[-1]}')
+# print(' == API image request ==')
+# print(f'    * response status      = {resp}')
+# print(f'    * saving image to disk = {image.split("/")[-1]}')
 
-with open(image.split('/')[-1], 'wb') as fh:
-    fh.write(content)
+# with open(image.split('/')[-1], 'wb') as fh:
+#     fh.write(content)
 
 print(listings)
 
-csv_file = "dababy.csv"
+csv_file = "test.csv"
 csv_columns = ['id', 'artist', 'title', 'year']
 
 try:
