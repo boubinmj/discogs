@@ -79,7 +79,7 @@ print(' Authentication complete. Future requests will be signed with the above t
 artists = []
 albums = []
 
-with open('data/scraped/1976.csv') as csv_file:
+with open('data/scraped/2010.csv') as csv_file:
     csv_reader = csv.reader(csv_file,delimiter=',')
     line_count = 0
     for row in csv_reader:
@@ -97,10 +97,10 @@ for artist in artists[1:]:
     print(type(search_results))
     print(type(album_results))
     print('\n== Search results for release_title=House For All ==')
-    count = 100
+    count = 50
     for release in search_results:
-        # if(count < 1):
-        #     break
+        if(count < 1):
+             break
         print(f'\n\t== discogs-id {release.id} ==')
         # print(f'\tArtist\t: {", ".join(artist.name for artist in release.artists)}')
         # #print(f'\tTitle\t: {release.title}')
@@ -108,13 +108,15 @@ for artist in artists[1:]:
         # print(f'\tLabels\t: {", ".join(label.name for label in release.labels)}')
 
         #print(release)
-
-        listing = {
-        'id': release.id,
-        'artist': release.artists[0].name,
-        'title': release.title,
-        'year': release.year
-        }
+        try:
+            listing = {
+                'id': release.id,
+                'artist': release.artists[0].name,
+                'title': release.title,
+                'year': release.year
+            }
+        except:
+            continue
 
         listings.append(listing)
 
@@ -142,7 +144,7 @@ for artist in artists[1:]:
 
 print(listings)
 
-csv_file = "data/1975_api.csv"
+csv_file = "data/2010_api.csv"
 csv_columns = ['id', 'artist', 'title', 'year']
 
 try:
