@@ -89,7 +89,7 @@ with open('discogs.csv') as csv_file:
 print(artists)
 listings = []
 
-for artist in artists[114:115]:
+for artist in artists[2:50]:
     search_results = discogsclient.search(type='release', artist=artist)
 
     album_results = discogsclient.search(type='listing', artist=artist)
@@ -98,31 +98,31 @@ for artist in artists[114:115]:
     print(type(album_results))
     print('\n== Search results for release_title=House For All ==')
     count = 20
-    # for release in search_results:
-    #     if(count < 1):
-    #         break
-    #     print(f'\n\t== discogs-id {release.id} ==')
-    #     # print(f'\tArtist\t: {", ".join(artist.name for artist in release.artists)}')
-    #     # #print(f'\tTitle\t: {release.title}')
-    #     # print(f'\tYear\t: {release.year}')
-    #     # print(f'\tLabels\t: {", ".join(label.name for label in release.labels)}')
+    for release in search_results:
+        if(count < 1):
+            break
+        print(f'\n\t== discogs-id {release.id} ==')
+        # print(f'\tArtist\t: {", ".join(artist.name for artist in release.artists)}')
+        # #print(f'\tTitle\t: {release.title}')
+        # print(f'\tYear\t: {release.year}')
+        # print(f'\tLabels\t: {", ".join(label.name for label in release.labels)}')
 
-    #     print(release)
+        #print(release)
 
-    #     listing = {
-    #     'id': release.id,
-    #     'artist': release.artists[0].name,
-    #     'title': release.title,
-    #     'year': release.year
-    #     }
+        listing = {
+        'id': release.id,
+        'artist': release.artists[0].name,
+        'title': release.title,
+        'year': release.year
+        }
 
-    #     listings.append(listing)
+        listings.append(listing)
 
-    #     count = count - 1
+        count = count - 1
 
-    print(album_results)
-    for lis in album_results:
-        print(lis.artist)
+    # print(album_results)
+    # for lis in album_results:
+    #     print(lis.artist)
     # for listing in album_results:
     #     print(listing.price)
 
@@ -142,7 +142,7 @@ for artist in artists[114:115]:
 
 print(listings)
 
-csv_file = "test.csv"
+csv_file = "data/all.csv"
 csv_columns = ['id', 'artist', 'title', 'year']
 
 try:
