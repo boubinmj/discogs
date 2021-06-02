@@ -8,7 +8,7 @@ class DiscogsSpider(Spider):
     start_urls = ['https://en.wikipedia.org/wiki/List_of_Billboard_200_number-one_albums_of_2014']
 
     def parse(self, response):
-        page_urls = [f'https://en.wikipedia.org/wiki/List_of_Billboard_200_number-one_albums_of_{i}' for i in range(1975, 1976)]
+        page_urls = [f'https://en.wikipedia.org/wiki/List_of_Billboard_200_number-one_albums_of_{i}' for i in range(1976, 1977)]
 
         for url in page_urls:
             yield Request(url=url, callback=self.parse_results_page)

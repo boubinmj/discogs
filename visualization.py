@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-dababy_path = 'data/dababy.csv'
-huey_path = 'data/huey.csv'
+dababy_path = 'data/api/dababy.csv'
+huey_path = 'data/api/huey.csv'
 
 dababy = pd.read_csv(dababy_path, delimiter=',')
 huey = pd.read_csv(huey_path, delimiter=',')
@@ -36,6 +36,10 @@ plt.show()
 
 fig2 = plt.figure()
 ax3 = fig2.add_subplot(111)
-ax3.bar(huey_yrs,huey_per_year, color = 'b', width = 0.5)
-ax3.bar(dby_yrs+0.5,dby_per_year, color = 'g', width=0.5)
+ax3.bar(huey_yrs,huey_per_year, color = 'b', width = 0.5, label = "Huey")
+ax3.bar(dby_yrs+0.5,dby_per_year, color = 'g', width=0.5, label = "Dababy")
+ax3.set_xlabel('year')
+ax3.set_ylabel('Number of Releases')
+ax3.set_title('Releases - Dababy vs. Huey Lewis and the News')
+plt.legend()
 plt.show()
