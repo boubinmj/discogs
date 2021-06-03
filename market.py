@@ -76,84 +76,22 @@ print(' Authentication complete. Future requests will be signed with the above t
 # With an active auth token, we're able to reuse the client object and request
 # additional discogs authenticated endpoints, such as database search.
 
-artists = []
-albums = []
 
-with open('data/scraped/2010.csv') as csv_file:
-    csv_reader = csv.reader(csv_file,delimiter=',')
-    line_count = 0
-    for row in csv_reader:
-        artists.append(row[1])
-        albums.append(row[0])
+import urllib.request, json
+import pandas as pd
 
-print(artists)
-listings = []
+url = "https://api.discogs.com/marketplace/listings/172723812" + '/' + oauth_verifier
+response = urllib.request.urlopen(url)
+data = json.loads(response.read())
+# print(data.keys())
+# print(type(data))
 
-for artist in artists[3:4]:
-    search_results = discogsclient.search(type='release', artist=artist)
+# print(type(data['releases']))
 
-    album_results = discogsclient.search(type='listing', artist=artist)
+for entry in data:
+	print(type(entry))
 
-    print(type(search_results))
-    print(type(album_results))
-    print('\n== Search results for release_title=House For All ==')
-    count = 10
-    for release in search_results:
-        if(count < 1):
-             break
-        print(f'\n\t== discogs-id {release.id} ==')
-        # print(f'\tArtist\t: {", ".join(artist.name for artist in release.artists)}')
-        # #print(f'\tTitle\t: {release.title}')
-        # print(f'\tYear\t: {release.year}')
-        # print(f'\tLabels\t: {", ".join(label.name for label in release.labels)}')
-
-        #print(release)
-        try:
-            listing = {
-                'id': release.id,
-                'artist': release.artists[0].name,
-                'title': release.title,
-                'year': release.year
-            }
-        except:
-            continue
-
-        listings.append(listing)
-
-        count = count - 1
-
-    # print(album_results)
-    # for lis in album_results:
-    #     print(lis.artist)
-    # for listing in album_results:
-    #     print(listing.price)
-
-    # marketplace_result = discogsclient.search(type='release', username='ARC Music')
-    # print(marketplace_result.inventory)
-
-# You can reach into the Fetcher lib if you wish to used the wrapped requests
-# library to download an image. The following example demonstrates this.
-# image = search_results[0].images[0]['uri']
-# content, resp = discogsclient._fetcher.fetch(None, 'GET', image,
-#                 headers={'User-agent': discogsclient.user_agent})
-
-# print(' == API image request ==')
-# print(f'    * response status      = {resp}')
-# print(f'    * saving image to disk = {image.split("/")[-1]}')
-
-# with open(image.split('/')[-1], 'wb') as fh:
-#     fh.write(content)
-
-print(listings)
-
-csv_file = "data/dummy.csv"
-csv_columns = ['id', 'artist', 'title', 'year']
-
-try:
-    with open(csv_file, 'w') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
-        writer.writeheader()
-        for data in listings:
-            writer.writerow(data)
-except IOError:
-    print("I/O error")
+# for entry in data:
+# 		print(entry)
+# 		print('\n')
+# 		print('\n')

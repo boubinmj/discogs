@@ -89,7 +89,7 @@ with open('data/scraped/2010.csv') as csv_file:
 print(artists)
 listings = []
 
-for artist in artists[3:4]:
+for artist in artists[2:3]:
     search_results = discogsclient.search(type='release', artist=artist)
 
     album_results = discogsclient.search(type='listing', artist=artist)
@@ -128,8 +128,6 @@ for artist in artists[3:4]:
     # for listing in album_results:
     #     print(listing.price)
 
-    # marketplace_result = discogsclient.search(type='release', username='ARC Music')
-    # print(marketplace_result.inventory)
 
 # You can reach into the Fetcher lib if you wish to used the wrapped requests
 # library to download an image. The following example demonstrates this.
