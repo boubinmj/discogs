@@ -122,6 +122,9 @@ for artist in artists[3:4]:
 
         count = count - 1
 
+        release1 = discogsclient.release(12848302)
+        print(release1.tracklist)
+
     # print(album_results)
     # for lis in album_results:
     #     print(lis.artist)
